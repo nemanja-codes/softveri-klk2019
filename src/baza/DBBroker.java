@@ -11,6 +11,8 @@ import model.Profesor;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Predaje;
+import model.Predmet;
 import model.Status;
 import model.Zvanje;
 
@@ -60,6 +62,37 @@ public class DBBroker {
             Logger.getLogger(DBBroker.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+
+    public List<Predaje> vratiListuAngazovanjaIzBaze(List<Profesor> selektovaniProfesori) {
+        List<Predaje> lista = new ArrayList<>();
+        
+        for (Profesor profesor : selektovaniProfesori) {
+            String upit = "SELECT * FROM PREDAJE\n" +
+                        "JOIN PROFESOR ON PREDAJE.PROFESOR=PROFESOR.ID\n" +
+                        "JOIN PREDMET ON PREDAJE.PREDMET=PREDMET.ID\n" +
+                        "WHERE PREDAJE.PROFESOR="+profesor.getId();
+            try {
+                Statement st = Konekcija.getInstance().getConnection().createStatement();
+                ResultSet rs = st.executeQuery(upit);
+                while(rs.next()) {
+                    int idPredmet = rs.getInt("predmet.id");
+                    String nazivPredmeta = rs.getString("predmet.naziv");
+                    int ESP = rs.getInt("predmet.ESP");
+                    Predmet predmet = new Predmet(idPredmet, nazivPredmeta, ESP);
+                    int idAngazovanja = rs.getInt("predaje.id");
+                    Predaje predaje = new Predaje(idAngazovanja, profesor, predmet);
+                    
+                    lista.add(predaje);
+                    
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(DBBroker.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+        
+        return lista;
     }
     
 }

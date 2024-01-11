@@ -8,6 +8,7 @@ import baza.DBBroker;
 import java.util.ArrayList;
 import java.util.List;
 import model.PoreskaStopa;
+import model.Predaje;
 import model.Profesor;
 import model.Proizvod;
 import model.Proizvodjac;
@@ -81,6 +82,10 @@ public class Controller {
 
     public void azurirajProfesora(int id, String ime, String prezime, Zvanje z) {
         dbb.azurirajProfesora(id, ime, prezime, z);
+    }
+
+    public List<Predaje> vratiListuAngazovanjaIzBaze(List<Profesor> selektovaniProfesori) {
+        return dbb.vratiListuAngazovanjaIzBaze(selektovaniProfesori);
     }
 
     

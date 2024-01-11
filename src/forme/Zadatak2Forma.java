@@ -16,7 +16,7 @@ import model.Status;
  */
 public class Zadatak2Forma extends javax.swing.JFrame {
 
-    List<Profesor> sviProfesori;
+    private List<Profesor> sviProfesori;
     /**
      * Creates new form Zadatak2Forma
      */
